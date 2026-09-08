@@ -1,5 +1,7 @@
 # AI Support Triage
 
+[![CI](https://github.com/FrancoJCabral/AI-Support-Triage/actions/workflows/ci.yml/badge.svg)](https://github.com/FrancoJCabral/AI-Support-Triage/actions/workflows/ci.yml)
+
 AI Support Triage transforma consultas de soporte desestructuradas en información accionable para facilitar su priorización y derivación. El proyecto combina una API en .NET 8 con una interfaz web moderna y permite elegir entre análisis determinista local o integración opcional con OpenAI.
 
 ## Problema
@@ -92,6 +94,7 @@ La integración está implementada y cubierta por tests automatizados. La valida
 - Structured Outputs
 - JSON Schema
 - Git / GitHub
+- GitHub Actions
 
 ## Decisiones técnicas
 

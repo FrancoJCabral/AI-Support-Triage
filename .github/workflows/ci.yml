@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate backend and frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Restore backend
+        run: dotnet restore
+
+      - name: Build backend
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test backend
+        run: dotnet test --configuration Release --no-build
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.19.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: frontend/AI.SupportTriage.Web/pnpm-lock.yaml
+
+      - name: Install frontend dependencies
+        working-directory: frontend/AI.SupportTriage.Web
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint frontend
+        working-directory: frontend/AI.SupportTriage.Web
+        run: pnpm lint
+
+      - name: Build frontend
+        working-directory: frontend/AI.SupportTriage.Web
+        env:
+          NEXT_PUBLIC_API_BASE_URL: http://localhost:5173
+        run: pnpm build

@@ -18,6 +18,20 @@ builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<TriageExceptionHandler>();
 builder.Services.AddTriageServices(builder.Configuration);
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddCors(options =>
+        options.AddPolicy("LocalFrontend", policy =>
+            policy
+                .WithOrigins(
+                    "http://localhost:3000",
+                    "https://localhost:3000",
+                    "http://127.0.0.1:3000",
+                    "https://127.0.0.1:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()));
+}
+
 var app = builder.Build();
 
 app.UseExceptionHandler();
@@ -25,6 +39,7 @@ app.UseExceptionHandler();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("LocalFrontend");
     app.UseSwagger();
     app.UseSwaggerUI();
 }

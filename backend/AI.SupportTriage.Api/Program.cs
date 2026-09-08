@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using AI.SupportTriage.Api.Infrastructure;
 using AI.SupportTriage.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +14,13 @@ builder.Services
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ITriageService, RuleBasedTriageService>();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<TriageExceptionHandler>();
+builder.Services.AddTriageServices(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

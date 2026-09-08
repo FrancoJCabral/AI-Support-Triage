@@ -6,10 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <NoWarn>$(NoWarn);OPENAI001</NoWarn>
     <UserSecretsId>cfc78202-833a-407f-933d-f6c470e46c9f</UserSecretsId>
+    <SpaRoot>..\..\frontend\AI.SupportTriage.Web\</SpaRoot>
+    <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>http://localhost:3000</SpaProxyServerUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="OpenAI" Version="2.13.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.11" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 

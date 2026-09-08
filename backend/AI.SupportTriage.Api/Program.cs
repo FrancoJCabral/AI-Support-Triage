@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using AI.SupportTriage.Api.Development;
 using AI.SupportTriage.Api.Infrastructure;
 using AI.SupportTriage.Api.Services;
 
@@ -20,6 +21,11 @@ builder.Services.AddTriageServices(builder.Configuration);
 
 if (builder.Environment.IsDevelopment())
 {
+    if (builder.Configuration.GetValue<bool>("Development:LaunchFrontendBrowser"))
+    {
+        builder.Services.AddHostedService<FrontendBrowserLauncher>();
+    }
+
     builder.Services.AddCors(options =>
         options.AddPolicy("LocalFrontend", policy =>
             policy
@@ -44,7 +50,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 
